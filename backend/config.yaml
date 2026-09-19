@@ -1,0 +1,54 @@
+project:
+  name: "requests"          # used as a prefix for Qdrant collection names
+  repo_path: "test_data/requests"
+
+ingestion:
+  exclude_patterns: []   # extra glob patterns (e.g. "*.pem", "secrets/*") never read into the
+                          # index, on top of whatever the target repo's own .gitignore already
+                          # excludes (node_modules, .env, build output, etc. -- detected via
+                          # `git check-ignore`, not hardcoded). See backend/file_exclusions.py.
+
+history:
+  enabled: true   # set to false to skip history entirely: don't run history_ingest.py/history_update.py,
+                   # and search/chat silently proceed on current-state results only. Also self-degrades
+                   # automatically (with a warning, not a crash) if this is true but the history collection
+                   # doesn't exist yet or a query against it fails for any reason -- e.g. mid-migration, or
+                   # a backfill that hasn't finished. "Use whatever data is available" is the default behavior,
+                   # not just an opt-in.
+
+qdrant:
+  host: "localhost"
+  port: 6333
+
+embedding:
+  model_name: "Qwen/Qwen3-Embedding-0.6B"
+  dimension: 1024
+  query_prompt_name: "query"   # asymmetric model: queries get an instruct prefix, documents don't. null for models with no named prompts
+  max_seq_length: 1024
+  encode_batch_size: 8
+
+chunking:
+  text_chunk_size: 40
+  text_chunk_overlap: 5
+  diff_chunk_threshold: 2000
+  prose_max_chunk_size: 70   # section-aware chunking for .md/.rst; oversized sections split by paragraph
+  max_chunk_chars: 4000      # hard backstop on chunk byte size regardless of line count -- see docs/DECISIONS.md
+
+retrieval:
+  min_score_current: 0.37   # run `python3 backend/check_config.py --calibrate` after ingest.py to re-measure this
+  min_score_history: 0.37
+  max_file_chunks: 20         # cap on how many chunks a single filename-boost lookup returns (whole-file questions)
+  max_referenced_symbols: 5   # cap on how many cross-file symbol definitions get pulled in per query
+
+reranking:
+  enabled: true                                    # set false to skip reranking entirely -- falls back to plain RRF hybrid order
+  model_name: "cross-encoder/ms-marco-MiniLM-L-6-v2"  # small enough to share the GPU with the embedding model
+  candidate_pool: 20                                # how many hybrid results to fetch and rerank before boosting/truncation to top_k
+
+ctags:
+  binary: "ctags"   # universal-ctags binary name/path; used for cross-file symbol resolution
+
+llm:
+  backend: "gemini"              # "gemini" or "ollama"
+  ollama_model: "qwen2.5:3b"
+  gemini_model: "gemini-flash-lite-latest"

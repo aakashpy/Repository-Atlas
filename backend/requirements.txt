@@ -1,0 +1,14 @@
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+qdrant-client==1.19.0
+sentence-transformers==6.0.1
+fastembed==0.8.0
+torch==2.14.0
+google-genai==2.23.0
+requests==2.34.2
+python-dotenv==1.2.3
+PyYAML==6.0.3
+tree-sitter-language-pack==1.20.0
+# Also requires the 'universal-ctags' SYSTEM package (not pip-installable):
+#   sudo apt-get install universal-ctags
+# Used for cross-file symbol resolution (symbol_index.py). See docs/SETUP.md.

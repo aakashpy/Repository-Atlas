@@ -1,0 +1,9 @@
+venv/
+qdrant_storage/
+__pycache__/
+*.pyc
+.env
+test_data/
+*.bak
+docs/*
+CLAUDE.md
