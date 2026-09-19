@@ -5,5 +5,4 @@ __pycache__/
 .env
 test_data/
 *.bak
-docs/*
 CLAUDE.md
