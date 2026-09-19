@@ -98,17 +98,3 @@ frontend/             static single-page chat UI served by the FastAPI app
 docs/                 architecture, setup, usage, decisions log
 test_data/            target repo(s) this instance is indexing (not tracked in git)
 ```
-
-## How it works
-
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full system design.
-
-## Known limitations & what's next
-
-See [docs/LIMITATIONS_AND_ROADMAP.md](docs/LIMITATIONS_AND_ROADMAP.md).
-
-## Project history & decisions
-
-See [docs/DECISIONS.md](docs/DECISIONS.md) for a full log of design
-decisions, what was tried, what failed, and why — kept up to date
-throughout development.
